@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>TV Menu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a1a;
+      color: white;
+      overflow: hidden;
+    }
+
+    .menu {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .items {
+      flex: 3;
+      align: left;
+      padding-top: 2vh;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 0px;
+      place-content: top;
+    }
+
+    .item {
+      background: #1a1a1a;
+      overflow: hidden;
+      opacity: 0;
+      padding-top: 2vh;
+      transition: opacity 0.5s ease-in-out;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .item ul li {
+      margin-bottom: 0.5vh;
+    }
+
+    .image-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0vw;
+    }
+
+    .image-wrapper img {
+      width: 15vw;
+      height: 15vw;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .price-tag {
+      position: absolute;
+      top: .5vw;
+      right: 1.5vw;
+      background: rgba(255, 0, 0, 1);
+      border-radius: 50%;
+      width: 4.8vw;
+      height: 4.8vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4vw;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      z-index: 2;
+    }
+
+    .item h3 {
+      font-size: 2vw;
+      text-align: center;
+      margin: 0 3% 0vh 3%;
+      color: #cccc00;
+      font-weight: bold;
+    }
+
+    .item p {
+      font-size: 1vw;
+      margin: 0 5% 0vh 5%;
+      text-align: center;
+      color: #a2a2a2;
+      font-weight: bold;
+    }
+
+    .item strong {
+      font-size: 3vw;
+      margin-top: 2em;
+      color: #ffcc00;
+      display: block;
+      margin-top: 0.5vw;
+    }
+
+    .fade-in {
+      opacity: 1 !important;
+    }
+
+    .fade-out {
+      opacity: 0 !important;
+    }
+
+    .custom-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      list-style: none;
+      font-size: 1.3vh;
+      color: #a2a2a2;
+      font-weight: bold;
+      margin-top: 1vh;
+      padding: 0;
+      width: auto;
+      max-width: 22vw;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .custom-list-item {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 0.5vh;
+    }
+
+    .subitem-name {
+      flex: 1 1 0;
+      text-align: right;
+      color: #ffcc00;
+      padding-right: 0vw;
+      white-space: nowrap;
+    }
+
+    .subitem-dash {
+      flex: 0 0 auto;
+      text-align: center;
+      padding: 0 0.2vw;
+    }
+
+    .subitem-price {
+      flex: 0 0 6vw;
+      text-align: left;
+      color: #a2a2a2;
+      font-weight: bold;
+      white-space: nowrap;
+      padding-left: 0vw;
+    }
+
+    .special {
+      flex: 1;
+      height: 100vh;
+      background: linear-gradient(160deg, #111111, #111111);
+      color: #fff;
+      border-radius: 0;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      overflow-y: auto;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .special .logo {
+      max-width: 100%;
+      max-height: 30%;
+      padding-bottom: 2vh;
+      object-fit: contain;
+      display: block;
+      box-shadow: none;
+    }
+
+    .special-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .special h2 {
+      font-size: 2.6vw;
+      margin: 0vh 0 0vh;
+      justify-self: end;
+    }
+
+    .special h3 {
+      margin: 2vh 0 2vh;
+      font-size: 2.2vw;
+      color: #cccc00;
+      margin-bottom: 10px;
+    }
+
+    .special p,
+    .special strong {
+      color: #a2a2a2;
+      margin: 0vh 0vh 3vh;
+      font-size: 1.6vw;
+    }
+
+    .special img {
+      max-width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .special-price-tag {
+      background: rgba(255, 0, 0, 1);
+      border-radius: 50%;
+      width: 5vw;
+      height: 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4vw;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      margin: 1vh 0;
+    }
+
+    .special-image-wrapper {
+      width: 90%;
+      max-height: 100%;
+      object-fit: cover;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1vh;
+    }
+
+    .special-image-wrapper .special-image {
+      width: 90%;
+      height: 20vw;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .special-image-wrapper .special-price-tag {
+      position: absolute;
+      top: -1.5vw;
+      right: -0.5vw;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="menu">
+    <div class="items" id="menuItems"></div>
+    <div class="special" id="specialItem">
+      <img class="logo" src="https://i.ibb.co/nqmRcSD4/Ogn-Fresco1.png" alt="Logo">
+      <h2>Today's Special</h2>
+    </div>
+  </div>
+
+  <script>
+    const sheetId = "1cnKlHcvfT_ZRpRBeIPdDyUEuMKQ9VI4ekwJ8Liv3Jco";
+    const sheetName = "Sheet1";
+    const gvizUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+    let allItems = [];
+    let menuItems = [];
+    let currentPage = 0;
+    let totalPages = 0;
+    async function loadData() {
+      const response = await fetch(gvizUrl);
+      const text = await response.text();
+      const json = JSON.parse(text.substr(47).slice(0, -2));
+      const cols = json.table.cols.map(col => col.label.trim());
+      allItems = json.table.rows.map(row => {
+        const obj = {};
+        row.c.forEach((cell, i) => {
+          obj[cols[i]] = cell ? cell.v : "";
+        });
+        return obj;
+      });
+      renderSpecial();
+      // Exclude the special from menu list
+      menuItems = allItems.filter(i => i.Special.toString().toLowerCase() !== "true");
+      totalPages = Math.ceil(menuItems.length / 8);
+      renderPage();
+      if (totalPages > 1) {
+        setInterval(transitionToNextPage, 10000);
+      }
+    }
+
+    function renderSpecial() {
+      const specialContainer = document.getElementById("specialItem");
+      // Group all special items by Parent Item (for variations)
+      const specialItems = allItems.filter(i => i.Special.toString().toLowerCase() === "true");
+      if (specialItems.length > 0) {
+        const grouped = {};
+        specialItems.forEach(item => {
+          const parent = item["Parent Item"] || item.Name;
+          if (!grouped[parent]) grouped[parent] = [];
+          grouped[parent].push(item);
+        });
+        const [parent, items] = Object.entries(grouped)[0];
+        const parentItem = items[0];
+        const hasPrice = parentItem.Price !== undefined && parentItem.Price !== null && parentItem.Price !== "";
+        let html = `
+    <img class="logo" src="https://i.ibb.co/hxmt0y21/Untitled-1.png" alt="Logo">
+    <h2>Today's Special</h2>
+    <h3>${parent}</h3>
+    <p>${parentItem.Description}</p>
+    <div class="special-image-wrapper">
+      <div class="special-image-bottom">
+        <img class="special-image" src="${parentItem["Image URL"]}" alt="${parentItem.Name}">
+      </div>
+      ${hasPrice ? `<div class="special-price-tag">${parentItem.Price}</div>` : ""}
+    </div>
+  `;
+        if (items.length > 1) {
+          html += `<ul style="padding:0 5%;list-style:none;font-size:1.1vw;color:#a2a2a2;font-weight:bold;margin-top:1vh;">`;
+          items.forEach((variation, idx) => {
+            if (idx === 0) return;
+            html += `<li><span style="color:#ffcc00">${variation.Name}</span> - ${variation.Price}</li>`;
+          });
+          html += `</ul>`;
+        }
+        specialContainer.innerHTML = html;
+      } else {
+        // No specials, hide the section
+        specialContainer.style.display = "none";
+      }
+    }
+
+function renderPage() {
+  if (menuItems.length === 0) return;
+
+  // currentPage is always valid due to modulo logic in transitionToNextPage
+  const container = document.getElementById("menuItems");
+  container.innerHTML = "";
+
+  const grouped = {};
+  menuItems.forEach(item => {
+    const parent = item["Parent Item"] || item.Name;
+    if (!grouped[parent]) grouped[parent] = [];
+    grouped[parent].push(item);
+  });
+
+  const parentGroups = Object.entries(grouped);
+  const maxPage = Math.ceil(parentGroups.length / 8);
+  // Ensure currentPage is always valid
+  if (currentPage >= maxPage) currentPage = 0;
+  const pageGroups = parentGroups.slice(currentPage * 8, currentPage * 8 + 8);
+
+  // Always render a valid page, even if fewer than 8 items
+  pageGroups.forEach(([parent, items], i) => {
+    const parentItem = items[0];
+    const div = document.createElement("div");
+    div.className = "item";
+    const hasPrice = parentItem.Price !== undefined && parentItem.Price !== null && parentItem.Price !== "";
+
+    div.innerHTML = `
+      <div class="image-wrapper">
+        <img src="${parentItem["Image URL"]}" alt="${parentItem.Name}">
+        ${hasPrice ? `<div class="price-tag">${parentItem.Price}</div>` : ""}
+      </div>
+      <div class="text-content">
+        <h3>${parent}</h3>
+        <p>${parentItem.Description}</p>
+      </div>
+    `;
+
+    if (items.length > 1) {
+      const list = document.createElement("ul");
+      list.classList.add("custom-list");
+      items.forEach((variation, idx) => {
+        if (idx === 0) return;
+        const li = document.createElement("li");
+        li.className = "custom-list-item";
+        li.innerHTML = `
+          <span class="subitem-name">${variation.Name}</span>
+          <span class="subitem-dash"> - </span>
+          <span class="subitem-price">${variation.Price}</span>
+        `;
+        list.appendChild(li);
+      });
+      div.appendChild(list);
+    }
+
+    container.appendChild(div);
+
+    setTimeout(() => {
+      div.classList.add("fade-in");
+    }, 100 * i);
+  });
+}
+async function transitionToNextPage() {
+  if (totalPages > 1) {
+    currentPage = (currentPage + 1) % totalPages; // Move this up!
+    const container = document.getElementById("menuItems");
+    const children = Array.from(container.children);
+    for (let i = 0; i < children.length; i++) {
+      children[i].classList.remove("fade-in");
+      children[i].classList.add("fade-out");
+      await new Promise(res => setTimeout(res, 100));
+    }
+    await new Promise(res => setTimeout(res, 500));
+    renderPage();
+  }
+}
+    loadData();
+  </script>
+</body>
+
+</html>
